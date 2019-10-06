@@ -21,4 +21,6 @@ Route::get('/pelajar/{id}/edit', 'PelajarController@edit');
 Route::post('/pelajar/{id}/update','PelajarController@update');
 Route::get('/pelajar/{id}/delete', 'PelajarController@delete');
 
-Route::get('/testingvueweb', 'TestingController@index');
+Route::get('/matapelajaran', 'MatapelajaranController@index');
+Route::get('/datamatapelajaran', 'MatapelajaranController@matapelajaranjson');
+Route::post('/deleteMatapelajaran', 'MatapelajaranController@deleteDataMatapelajaran');
