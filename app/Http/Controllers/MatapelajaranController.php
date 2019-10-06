@@ -20,4 +20,21 @@ class MatapelajaranController extends Controller
         $matapelajaran = Matapelajaran::where('id','=',$request->get('id'))->delete();
         return response()->json();
     }
+
+    public function insertDataMatapelajaran(Request $request){
+        $matapelajarans = Matapelajaran::create($request->all());
+        return response()->json();
+    }
+
+    public function updateMatapelajaran(Request $request){
+        $matapelajaran = $request->isMethod('put') ? Matapelajaran::findOrFail($request->id) : new Matapelajaran;
+
+        $matapelajaran->nama = $request->nama;
+        $matapelajaran->gred = $request->gred;
+        $matapelajaran->markah = $request->markah;
+
+        $matapelajaran->save();
+
+        return response()->json();
+    }
 }

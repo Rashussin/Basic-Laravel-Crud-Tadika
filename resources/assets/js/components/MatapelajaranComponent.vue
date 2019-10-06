@@ -1,20 +1,20 @@
 <template>
     <div class='row'>
         <div class='col-6'>
-            <form>
+            <form @submit.prevent="insertMatapelajaran">
             <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                <label for="exampleInputEmail1">Matapelajaran</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="matapelajaran.nama" placeholder="Enter matapelajaran">
             </div>
             <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                <label for="exampleInputEmail1">Gred</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="matapelajaran.gred" placeholder="Enter gred">
             </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Markah</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="matapelajaran.markah" placeholder="Enter markah">
             </div>
+            
             <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
@@ -33,7 +33,8 @@
                         <th>{{matapelajaran.nama}}</th>
                         <th>{{matapelajaran.gred}}</th>
                         <th>{{matapelajaran.markah}}</th>
-                        <th><button @click="deleteMatapelajaran(matapelajaran.id)" class="btn btn-danger">Delete</button></th>
+                        <th><button @click="deleteMatapelajaran(matapelajaran.id)" class="btn btn-danger">Delete</button><br>
+                        <button @click="updateMatapelajaran(matapelajaran)" class="btn btn-warning">Edit</button></th>
                     </tr>
                 </tbody>
             </table>
@@ -51,7 +52,8 @@
                     nama: "",
                     gred: "",
                     markah: ""
-                }
+                },
+                edit: false
             };
         },
         created(){
@@ -85,7 +87,60 @@
                         this.fetchdatamatapelajaran();
                     })
                     .catch(err=>console.log(err));
-            }
+            },
+            insertMatapelajaran(){
+                if(this.edit === false){
+                    fetch('/insertMatapelajaran',{
+                    method: 'POST',
+                    body: JSON.stringify(this.matapelajaran),
+                    headers:{
+                        'content-type':'application/json',
+                        'X-CSRF-Token': $("meta[name=csrf-token]").attr("content"),
+                        Accept: "application/json"
+
+                    }
+                })
+                    .then(res=>res.json())
+                    .then(res=>{
+                        this.matapelajaran.nama= '';
+                        this.matapelajaran.gred= '';
+                        this.matapelajaran.markah= '';
+                        this.edit= true;
+                        this.fetchdatamatapelajaran();
+                    })
+                    .catch(err=>console.log(err));
+                }else{
+                    fetch('/updateMatapelajaran',{
+                    method: 'PUT',
+                    body: JSON.stringify(this.matapelajaran),
+                    headers:{
+                        'content-type':'application/json',
+                        'X-CSRF-Token': $("meta[name=csrf-token]").attr("content"),
+                        Accept: "application/json"
+
+                    }
+                })
+                    .then(res=>res.json())
+                    .then(res=>{
+                        console.log('dh masok update');
+                        this.matapelajaran.nama= '';
+                        this.matapelajaran.gred= '';
+                        this.matapelajaran.markah= '';
+                        this.fetchdatamatapelajaran();
+                    })
+                    .catch(err=>console.log(err));
+                }
+                
+            
+                },
+                updateMatapelajaran(matapelajaran){
+                    console.log('masok update');
+                    this.matapelajaran.id= matapelajaran.id;
+                    this.matapelajaran.nama= matapelajaran.nama;
+                    this.matapelajaran.gred= matapelajaran.gred;
+                    this.matapelajaran.markah= matapelajaran.markah;
+                }
+                            
         }
     }
 </script>

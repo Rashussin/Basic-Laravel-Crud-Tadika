@@ -24,3 +24,5 @@ Route::get('/pelajar/{id}/delete', 'PelajarController@delete');
 Route::get('/matapelajaran', 'MatapelajaranController@index');
 Route::get('/datamatapelajaran', 'MatapelajaranController@matapelajaranjson');
 Route::post('/deleteMatapelajaran', 'MatapelajaranController@deleteDataMatapelajaran');
+Route::post('/insertMatapelajaran', 'MatapelajaranController@insertDataMatapelajaran');
+Route::put('/updateMatapelajaran', 'MatapelajaranController@updateMatapelajaran');
